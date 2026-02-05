@@ -8,8 +8,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class CustomerController {
-  @GetMapping("/api/users/me")
+  @GetMapping("/api/customers/me")
   public Map<String, String> getMe(@RequestHeader("X-Auth-User-ID") String userId) {
     return Map.of("message", "Success", "received_user_id", userId);
+  }
+
+  @GetMapping("/api/customers/test")
+  public String test() {
+    return "Hello from Java Lambda!";
   }
 }
