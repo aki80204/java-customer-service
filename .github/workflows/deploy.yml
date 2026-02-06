@@ -36,11 +36,11 @@ jobs:
       - name: Upload to S3
         run: |
           echo "Uploading java-customer-service-0.0.1-SNAPSHOT-aws.jar to S3..."
-          aws s3 cp build/libs/java-customer-service-0.0.1-SNAPSHOT-aws.jar s3://aki80204-artifacts/java-customer-service/customer.jar
+          aws s3 cp build/libs/java-customer-service-0.0.1-SNAPSHOT-aws.jar s3://${{ secrets.S3_BUCKET_NAME }}/java-customer-service/customer.jar
 
       - name: Deploy to Lambda from S3
         run: |
           aws lambda update-function-code \
             --function-name java-customer-service \
-            --s3-bucket aki80204-artifacts \
+            --s3-bucket ${{ secrets.S3_BUCKET_NAME }} \
             --s3-key java-customer-service/customer.jar
