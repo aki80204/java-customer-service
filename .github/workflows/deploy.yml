@@ -1,0 +1,46 @@
+name: Deploy Java Lambda to S3 (Gradle)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build -x test
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Upload to S3
+        run: |
+          echo "Uploading java-customer-service-0.0.1-SNAPSHOT-aws.jar to S3..."
+          aws s3 cp build/libs/java-customer-service-0.0.1-SNAPSHOT-aws.jar s3://aki80204-artifacts/java-customer-service/customer.jar
+
+      - name: Deploy to Lambda from S3
+        run: |
+          aws lambda update-function-code \
+            --function-name java-customer-service \
+            --s3-bucket aki80204-artifacts \
+            --s3-key java-customer-service/customer.jar
