@@ -1,9 +1,12 @@
 package com.aki.customer.service;
 
+import org.springframework.stereotype.Service;
+
 import com.aki.customer.dto.CustomerCreateRequest;
 import com.aki.customer.entity.CustomerAccount;
 import com.aki.customer.repository.CustomerAccountRepository;
 
+@Service
 public class CustomerAccountService {
 
   private final CustomerAccountRepository customerAccountRepository;
