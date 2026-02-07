@@ -2,6 +2,8 @@ package com.aki.customer.controller;
 
 import java.util.Map;
 
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +33,7 @@ public class CustomerController {
   }
 
   @PostMapping("/api/customers/create")
-  public CustomerAccount create(@RequestBody CustomerCreateRequest request) {
+  public CustomerAccount create(@Valid @RequestBody CustomerCreateRequest request) {
     return this.customerAccountService.register(request);
   }
 }
