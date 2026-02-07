@@ -3,6 +3,7 @@ package com.aki.customer.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,24 +15,22 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<Map<String, String>> handleValidationExceptions(
       MethodArgumentNotValidException ex) {
-
-    // AWSのログに強制的に書き出す
-    System.out.println("DEBUG: GlobalExceptionHandler caught MethodArgumentNotValidException!");
-
     Map<String, String> errors = new HashMap<>();
-    try {
-      ex.getBindingResult()
-          .getFieldErrors()
-          .forEach(
-              error -> {
-                System.out.println(
-                    "DEBUG: Field error - " + error.getField() + ": " + error.getDefaultMessage());
-                errors.put(error.getField(), error.getDefaultMessage());
-              });
-    } catch (Exception e) {
-      System.out.println("DEBUG: Error inside handler: " + e.getMessage());
-    }
+
+    ex.getBindingResult()
+        .getFieldErrors()
+        .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
     return ResponseEntity.badRequest().body(errors);
+  }
+
+  @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+  public ResponseEntity<Map<String, String>> handleDataIntegrityViolation(
+      DataIntegrityViolationException ex) {
+    Map<String, String> errors = new HashMap<>();
+
+    errors.put("error", "DBの制約違反が発生しました。");
+
+    return ResponseEntity.status(org.springframework.http.HttpStatus.CONFLICT).body(errors);
   }
 }
