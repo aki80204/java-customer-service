@@ -14,11 +14,23 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ResponseEntity<Map<String, String>> handleValidationExceptions(
       MethodArgumentNotValidException ex) {
-    Map<String, String> errors = new HashMap<>();
 
-    ex.getBindingResult()
-        .getFieldErrors()
-        .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+    // AWSのログに強制的に書き出す
+    System.out.println("DEBUG: GlobalExceptionHandler caught MethodArgumentNotValidException!");
+
+    Map<String, String> errors = new HashMap<>();
+    try {
+      ex.getBindingResult()
+          .getFieldErrors()
+          .forEach(
+              error -> {
+                System.out.println(
+                    "DEBUG: Field error - " + error.getField() + ": " + error.getDefaultMessage());
+                errors.put(error.getField(), error.getDefaultMessage());
+              });
+    } catch (Exception e) {
+      System.out.println("DEBUG: Error inside handler: " + e.getMessage());
+    }
 
     return ResponseEntity.badRequest().body(errors);
   }
