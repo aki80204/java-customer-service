@@ -34,12 +34,12 @@ public class CustomerAccountController {
     return ResponseEntity.noContent().build();
   }
 
-  @PostMapping("/api/customers/create")
+  @PostMapping("/api/customers/account")
   public CustomerAccount create(@Valid @RequestBody CustomerAccountRequest request) {
     return this.customerAccountService.registerAccount(request);
   }
 
-  @PutMapping("/api/customers/create")
+  @PutMapping("/api/customers/account")
   public CustomerAccount update(
       @Valid @RequestBody CustomerAccountRequest request, @RequestParam Long id) {
     return this.customerAccountService.updateAccount(request, id);
