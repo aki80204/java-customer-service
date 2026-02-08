@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CustomerCreateRequest {
+public class CustomerAccountRequest {
   @NotBlank(message = "名前は必須です")
   @Size(max = 255)
   private String name;
