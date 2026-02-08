@@ -41,7 +41,7 @@ public class CustomerAccountController {
 
   @PutMapping("/api/customers/create")
   public CustomerAccount update(
-      @Valid @RequestBody CustomerAccountRequest request, @RequestParam String id) {
+      @Valid @RequestBody CustomerAccountRequest request, @RequestParam Long id) {
     return this.customerAccountService.updateAccount(request, id);
   }
 }
