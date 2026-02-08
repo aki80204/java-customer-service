@@ -31,7 +31,8 @@ public class GlobalExceptionHandler {
       errors.put("error", "データ整合性エラーが発生しました");
     } else {
       // その他（未知のエラー）
-      errors.put("error", "予期せぬエラーが発生しました");
+      ex.printStackTrace();
+      errors.put("error", "予期せぬエラーが発生しました: " + ex.getClass().getName());
     }
 
     return ResponseEntity.status(status).body(errors);
