@@ -50,7 +50,7 @@ public class CustomerAccountService {
     return customerAccountRepository.save(customerAccount);
   }
 
-  public void deleteAccount(String id) {
-    customerAccountRepository.deleteById(Long.valueOf(id));
+  public void deleteAccount(Long id) {
+    customerAccountRepository.deleteById(id);
   }
 }
