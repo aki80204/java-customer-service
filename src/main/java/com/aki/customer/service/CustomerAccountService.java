@@ -1,8 +1,8 @@
 package com.aki.customer.service;
 
-import jakarta.ws.rs.NotFoundException;
-
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.aki.customer.dto.CustomerAccountRequest;
 import com.aki.customer.entity.CustomerAccount;
@@ -20,7 +20,10 @@ public class CustomerAccountService {
   public CustomerAccount getAccount(String id) {
     return customerAccountRepository
         .findById(Long.valueOf(id))
-        .orElseThrow(() -> new NotFoundException("CustomerAccount not found. id=" + id));
+        .orElseThrow(
+            () ->
+                new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "CustomerAccount not found. id=" + id));
   }
 
   public CustomerAccount registerAccount(CustomerAccountRequest request) {
@@ -36,7 +39,10 @@ public class CustomerAccountService {
     CustomerAccount customerAccount =
         customerAccountRepository
             .findById(Long.valueOf(id))
-            .orElseThrow(() -> new NotFoundException("CustomerAccount not found. id=" + id));
+            .orElseThrow(
+                () ->
+                    new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "CustomerAccount not found. id=" + id));
     customerAccount.setName(request.getName());
     customerAccount.setEmail(request.getEmail());
     customerAccountRepository.save(customerAccount);
