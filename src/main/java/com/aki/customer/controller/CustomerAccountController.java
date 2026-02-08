@@ -24,12 +24,12 @@ public class CustomerAccountController {
   }
 
   @GetMapping("/api/customers/account")
-  public CustomerAccount get(@RequestParam String id) {
+  public CustomerAccount get(@RequestParam Long id) {
     return this.customerAccountService.getAccount(id);
   }
 
   @DeleteMapping("/api/customers/account")
-  public ResponseEntity<Void> delete(@RequestParam String id) {
+  public ResponseEntity<Void> delete(@RequestParam Long id) {
     this.customerAccountService.deleteAccount(id);
     return ResponseEntity.noContent().build();
   }

@@ -17,9 +17,9 @@ public class CustomerAccountService {
     this.customerAccountRepository = customerAccountRepository;
   }
 
-  public CustomerAccount getAccount(String id) {
+  public CustomerAccount getAccount(Long id) {
     return customerAccountRepository
-        .findById(Long.valueOf(id))
+        .findById(id)
         .orElseThrow(
             () ->
                 new ResponseStatusException(
@@ -35,10 +35,10 @@ public class CustomerAccountService {
     return customerAccountRepository.save(customerAccount);
   }
 
-  public CustomerAccount updateAccount(CustomerAccountRequest request, String id) {
+  public CustomerAccount updateAccount(CustomerAccountRequest request, Long id) {
     CustomerAccount customerAccount =
         customerAccountRepository
-            .findById(Long.valueOf(id))
+            .findById(id)
             .orElseThrow(
                 () ->
                     new ResponseStatusException(
