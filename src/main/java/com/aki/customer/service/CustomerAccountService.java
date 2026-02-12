@@ -2,6 +2,7 @@ package com.aki.customer.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.aki.customer.dto.CustomerAccountRequest;
@@ -26,15 +27,15 @@ public class CustomerAccountService {
                     HttpStatus.NOT_FOUND, "CustomerAccount not found. id=" + id));
   }
 
+  @Transactional
   public CustomerAccount registerAccount(CustomerAccountRequest request) {
     CustomerAccount customerAccount = new CustomerAccount();
     customerAccount.setName(request.getName());
     customerAccount.setEmail(request.getEmail());
-    customerAccountRepository.save(customerAccount);
-
     return customerAccountRepository.save(customerAccount);
   }
 
+  @Transactional
   public CustomerAccount updateAccount(CustomerAccountRequest request, Long id) {
     CustomerAccount customerAccount =
         customerAccountRepository
@@ -45,11 +46,10 @@ public class CustomerAccountService {
                         HttpStatus.NOT_FOUND, "CustomerAccount not found. id=" + id));
     customerAccount.setName(request.getName());
     customerAccount.setEmail(request.getEmail());
-    customerAccountRepository.save(customerAccount);
-
     return customerAccountRepository.save(customerAccount);
   }
 
+  @Transactional
   public void deleteAccount(Long id) {
     customerAccountRepository.deleteById(id);
   }
